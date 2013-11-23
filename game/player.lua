@@ -32,14 +32,14 @@ end
 
 function Player:joystickreleased(key)
 	print(key)
-	if key == 1 then
+	if key == 6 then
 		self.is_shooting = false
 	end
 end
 
 function Player:joystickpressed(key)
 	print(key)
-	if key == 1 then
+	if key == 6 then
 		self.is_shooting = true
 	end
 end
