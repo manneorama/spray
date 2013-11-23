@@ -1,6 +1,7 @@
 
 -- Require "class" definitions
 Player = require "player"
+Shot = require "shot"
 Menu = require "menu"
 GUI = require "gui"
 Level = require "level"
@@ -63,8 +64,14 @@ function love.load()
 	print("Load finished...")
 end
 
+function love.joystickreleased(joystick, key)
+	if joystick == 1 then
+		players[1]:joystickreleased(key)
+	end
+end
+
 function love.joystickpressed(joystick, key)
-	if joystick == "Joystick1" then
+	if joystick == 1 then
 		players[1]:joystickpressed(key)
 	end
 end
