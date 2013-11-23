@@ -9,7 +9,7 @@ setmetatable(LevelGenerator, {
 
 function LevelGenerator.new()
     local self = setmetatable({}, LevelGenerator)
-    self.lines = 20
+    self.lines = 19
     self.lineWidth = 30
     self.spawns = 2
     self.matchExpr = '[XOS]+'
