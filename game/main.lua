@@ -67,15 +67,27 @@ function love.joystickpressed(joystick, key)
 	if joystick == "Joystick1" then
 		players[1]:joystickpressed(key)
 	end
-	print("Joystick" .. joystick .. " " .. key)
+end
+
+function love.keyreleased(key)
+	if game.mode == "playing" then
+		-- Handle player input
+		if not game.paused then
+			for i, player in ipairs(players) do
+				player:keyreleased(key)
+			end
+		end
+	end
 end
 
 function love.keypressed(key)
 	-- Take care of input, if playing
 	if game.mode == "playing" then
 		-- Handle player input
-		if not game.paused and not player.dead then
-			player:keypressed(key)
+		if not game.paused then
+			for i, player in ipairs(players) do
+				player:keypressed(key)
+			end
 		end
 
 		-- Restart game
