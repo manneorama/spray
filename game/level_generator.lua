@@ -18,32 +18,46 @@ function LevelGenerator.new()
 end
 
 function LevelGenerator:parseLevel(filename)
+    valid = self:validateLevel(filename)
+    if not valid then return nil end
+
+    level = {}
+    for line in io.lines(filename) do
+        table.insert(level, line)
+    end
+
+    return level
 end
 
 function LevelGenerator:validateLevel(filename)
     lineCount = 0
     spawnPoints = 0
-    for line in io.open(filename):lines() do 
+    for line in io.lines(filename) do 
         lineCount = lineCount + 1
         if lineCount > self.lines then
             break
         end
         if #line ~= self.lineWidth then 
-            error("line " .. lineCount .. " is not 30 characters wide")
+            print("line " .. lineCount .. " is not 30 characters wide")
+            return false
         end
         if #string.match(line, self.matchExpr) ~= #line then
-            error("line " .. lineCount .. " contains illegal characters")
+            print("line " .. lineCount .. " contains illegal characters")
+            return false
         end
         if string.find(line, self.spawnChar) then
             spawnPoints = spawnPoints + #string.match(line, '[S]+')
         end
     end
     if lineCount ~= self.lines then 
-        error("got " .. lineCount .. " lines, expected " .. self.lines)
+        print("got " .. lineCount .. " lines, expected " .. self.lines)
+        return false
     end
     if spawnPoints ~= self.spawns then
-        error("got " .. spawnPoints .. " spawns, expected " .. self.spawns)
+        print("got " .. spawnPoints .. " spawns, expected " .. self.spawns)
+        return false
     end
+    return true
 end
 
 return LevelGenerator
