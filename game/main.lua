@@ -4,6 +4,7 @@ Player = require "player"
 Shot = require "shot"
 Menu = require "menu"
 GUI = require "gui"
+Level = require "level"
 
 ----------------------------------------------
 ------ CALLBACK FUNCTIONS --------------------
@@ -42,7 +43,9 @@ function love.load()
 		menuColor = {r = 160, g = 160, b = 160},
 		menuActiveColor = {r = 255, g = 255, b = 255},
 		titleColor = {r = 255, g = 255, b = 255},
-		guiColor = {r = 0, g = 0, b = 0}
+		guiColor = {r = 0, g = 0, b = 0},
+        wallColor = {r = 0, g = 0, b = 0},
+        floorColor = {r = 255, g = 255, b = 255}
 	}
 	
 	-- Set mode
@@ -141,7 +144,9 @@ function love.draw()
 		menu:draw()
 
 	elseif game.mode == "playing" then
-	
+        -- draw level
+        level:draw()
+
 		-- Draw SNAKE
 		local player_dead = false
 		for i, player in ipairs(players) do
@@ -180,6 +185,8 @@ function startNewGame()
 		Player(1),
 		--Player(),
 	}
+    level = Level()
+    level:load('test')
 
 	-- Set gamestate stuff
 	game.paused = false
