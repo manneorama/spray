@@ -131,8 +131,13 @@ function love.update(dt)
 				player:update(dt)
 			end
 			
-			for i, shot in ipairs(shots) do
-				shot:update(dt)
+			local shots_to_remove = {}
+			
+			for i=#shots, 1, -1 do
+				shots[i]:update(dt)
+				if shots[i].collided then
+					table.remove(shots, i)
+				end
 			end
 		end
 	end
@@ -156,7 +161,7 @@ function love.draw()
 			end
 		end
 		
-		
+		-- Shots
 		for i, shot in ipairs(shots) do
 			shot:draw()
 		end

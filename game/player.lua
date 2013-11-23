@@ -101,7 +101,7 @@ function Player:update(dt)
 	self.position.x = self.position.x + self.movement.x * dt
 	self.position.y = self.position.y + self.movement.y * dt
 	
-	local collision, new_position = level:checkCollisions(self.position, self.radius)
+	local collision, new_position = level:checkCollisions(self.position, self.radius, true)
 	
 	if collision then
 		self.position = new_position

@@ -39,7 +39,7 @@ function Level:draw()
     end
 end
 
-function Level:checkCollisions(coords, radius)
+function Level:checkCollisions(coords, radius, new_position)
     local xposmin = math.floor((coords.x - radius)/gridSize)
     local xposmax = math.floor((coords.x + radius)/gridSize)
     local yposmin = math.floor((coords.y - radius)/gridSize)
@@ -60,7 +60,13 @@ function Level:checkCollisions(coords, radius)
         end
     end
 	
-    return collision, self:findNewPosition(collisions, coords, radius)
+	if new_position then
+		return collision, self:findNewPosition(collisions, coords, radius)
+	else
+		return collision
+	end
+
+    
 end
 
 function Level:findNewPosition(collisions, curPosition, radius)
