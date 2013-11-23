@@ -89,6 +89,8 @@ function Player:update(dt)
 
 	self.position.x = self.position.x + self.movement.x * dt
 	self.position.y = self.position.y + self.movement.y * dt
+
+    level:checkCollisions(self.position, self.radius)
 	
 	local aim_length = math.sqrt(aim_x*aim_x + aim_y*aim_y)
 	

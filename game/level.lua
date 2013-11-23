@@ -38,6 +38,53 @@ function Level:draw()
     end
 end
 
+function Level:checkCollisions(coords, radius)
+    local xposmin = math.floor((coords.x - radius)/gridSize)
+    local xposmax = math.floor((coords.x + radius)/gridSize)
+    local yposmin = math.floor((coords.y - radius)/gridSize)
+    local yposmax = math.floor((coords.y + radius)/gridSize)
+
+    local collision = false
+    local collisions = {}
+    local newPosition = {}
+    for i=yposmin, yposmax do
+        local levelRow = self.levelTable[i+1]
+        for j=xposmin, xposmax do
+            local tile = levelRow:sub(j+1,j+1)
+            if tile == 'X' then
+                collision = true
+                table.insert(collisions, {x = j, y = i})
+            end
+        end
+    end
+
+    return collision, self.findNewPositions(collisions, coords, radius)
+end
+
+function Level:findNewPosition(collisions, curPosition, radius)
+    local gridx = math.floor(curPosition.x/gridSize) + 1
+    local gridy = math.floor(curPosition.y/gridSize) + 1
+
+    for i, v in ipairs(collisions) do
+        if gridx ~= v.x then
+            if gridx < v.x then
+                curPosition.x = curPosition.x - radius
+            else
+                curPosition.x = curPosition.x + radius
+            end
+        end
+        if gridy ~= v.y then
+            if gridy < v.y then
+                curPosition.y = curPosition.y - radius
+            else
+                curPosition.y = curPosition.y + radius
+            end
+        end
+    end
+
+    return curPosition
+end
+
 function Level:getSpawnPoints()
     if self.spawnPositions then return self.spawnPositions end
 
