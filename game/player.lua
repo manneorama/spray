@@ -100,7 +100,7 @@ function Player:update(dt)
 	if self.is_shooting then
 		if self.time_since_shot >= 0.1 then
 			-- Spawn shot
-			self.shots[#self.shots+1] = Shot({x = self.position.x + self.direction.x * self.radius, y = self.position.y + self.direction.y * self.radius}, {x = self.direction.x * gridSize * 6, y = self.direction.y * gridSize * 6})
+			self.shots[#self.shots+1] = Shot({x = self.position.x + self.direction.x * self.radius, y = self.position.y + self.direction.y * self.radius}, {x = self.direction.x * gridSize * 12, y = self.direction.y * gridSize * 12})
 		end
 	end
 	
