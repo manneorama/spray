@@ -80,9 +80,7 @@ function love.keyreleased(key)
 	if game.mode == "playing" then
 		-- Handle player input
 		if not game.paused then
-			for i, player in ipairs(players) do
-				player:keyreleased(key)
-			end
+            players[2]:keyreleased(key)
 		end
 	end
 end
@@ -92,9 +90,7 @@ function love.keypressed(key)
 	if game.mode == "playing" then
 		-- Handle player input
 		if not game.paused then
-			for i, player in ipairs(players) do
-				player:keypressed(key)
-			end
+            players[2]:keypressed(key)
 		end
 
 		-- Restart game
@@ -189,16 +185,18 @@ end
 ----------------------------------------------
 
 function startNewGame()
+    level = Level()
+    level:get('test')
+    local spawns = level:getSpawnPoints()
+
 	-- Create player
 	players = {
-		Player(1),
-		--Player(),
+		Player(1, spawns[1].x, spawns[1].y, true),
+		Player(2, spawns[2].x, spawns[2].y, false),
 	}
 	
 	shots = {}
 	
-    level = Level()
-    level:get('test')
 
 	-- Set gamestate stuff
 	game.paused = false

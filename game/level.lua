@@ -96,7 +96,9 @@ function Level:getSpawnPoints()
     local spawns = {}
     for i, row in ipairs(self.levelTable) do
         s, e = row:find('S')
-        table.insert(spawns, {y = i, x = s})
+        if s then
+            table.insert(spawns, {y = i*gridSize, x = s*gridSize})
+        end
     end
 
     self.spawnPositions = spawns

@@ -7,11 +7,11 @@ setmetatable(Player, {
 	end,
 })
 
-function Player.init(id)
+function Player.init(id, posx, posy)
 	-- Create player
 	local player = {
 		id = id,
-		position = {x = 32, y = 32},
+		position = {x = posx, y = posy},
 		direction = {x = 1, y = 0},
 		movement = {x = 0, y = 0},
 		radius = 16,
@@ -31,62 +31,51 @@ function Player:kill()
 end
 
 function Player:joystickreleased(key)
-	print(key)
 	if key == 6 then
 		self.is_shooting = false
 	end
 end
 
 function Player:joystickpressed(key)
-	print(key)
 	if key == 6 then
 		self.is_shooting = true
 	end
 end
 
 function Player:keyreleased(key)
-	if self.id == 1 then
-		if key == "w" then
-			self.movement.y = self.movement.y+128
-		elseif key == "a" then
-			self.movement.x = self.movement.x+128
-		elseif key == "s" then
-			self.movement.y = self.movement.y-128
-		elseif key == "d" then
-			self.movement.x = self.movement.x-128
-		elseif key == " " then
-			self.is_shooting = false
-		end
-	elseif self.id == 2 then
-	
-	end
+    if key == "w" then
+        self.movement.y = self.movement.y+128
+    elseif key == "a" then
+        self.movement.x = self.movement.x+128
+    elseif key == "s" then
+        self.movement.y = self.movement.y-128
+    elseif key == "d" then
+        self.movement.x = self.movement.x-128
+    elseif key == " " then
+        self.is_shooting = false
+    end
 end	
 
 function Player:keypressed(key)
-	print(key)
-	if self.id == 1 then
-		if key == "w" then
-			self.movement.y = self.movement.y-128
-		elseif key == "a" then
-			self.movement.x = self.movement.x-128
-		elseif key == "s" then
-			self.movement.y = self.movement.y+128
-		elseif key == "d" then
-			self.movement.x = self.movement.x+128
-		elseif key == "up" then
-			self.direction.y = -1
-		elseif key == "left" then
-			self.direction.x = -1
-		elseif key == "down" then
-			self.direction.y = 1
-		elseif key == "right" then
-			self.direction.x = 1
-		elseif key == " " then
-			self.is_shooting = true
-		end
-	elseif self.id == 2 then
-	
-	end
+    if key == "w" then
+        self.movement.y = self.movement.y-128
+    elseif key == "a" then
+        self.movement.x = self.movement.x-128
+    elseif key == "s" then
+        self.movement.y = self.movement.y+128
+    elseif key == "d" then
+        self.movement.x = self.movement.x+128
+    elseif key == "up" then
+        self.direction.y = -1
+    elseif key == "left" then
+        self.direction.x = -1
+    elseif key == "down" then
+        self.direction.y = 1
+    elseif key == "right" then
+        self.direction.x = 1
+    elseif key == " " then
+        self.is_shooting = true
+    end
 end	
 
 function Player:update(dt)
