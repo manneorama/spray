@@ -12,6 +12,7 @@ function Player.init(id)
 	local player = {
 		id = id,
 		position = {x = 32, y = 32},
+		movement = {x = 0, y = 0},
 		radius = 16,
 		dead = false,
 	}
@@ -29,8 +30,36 @@ function Player:joystickpressed(key)
 	
 end
 
-function Player:keypressed(key)
+function Player:keyreleased(key)
+	if self.id == 1 then
+		if key == "w" then
+			self.movement.y = self.movement.y+128
+		elseif key == "a" then
+			self.movement.x = self.movement.x+128
+		elseif key == "s" then
+			self.movement.y = self.movement.y-128
+		elseif key == "d" then
+			self.movement.x = self.movement.x-128
+		end
+	elseif self.id == 2 then
 	
+	end
+end	
+
+function Player:keypressed(key)
+	if self.id == 1 then
+		if key == "w" then
+			self.movement.y = self.movement.y-128
+		elseif key == "a" then
+			self.movement.x = self.movement.x-128
+		elseif key == "s" then
+			self.movement.y = self.movement.y+128
+		elseif key == "d" then
+			self.movement.x = self.movement.x+128
+		end
+	elseif self.id == 2 then
+	
+	end
 end	
 
 function Player:update(dt)
@@ -39,9 +68,9 @@ function Player:update(dt)
 	
 	self.position.x = self.position.x + movement_x * dt * 128
 	self.position.y = self.position.y + movement_y * dt * 128
-	
-	self.
 
+	self.position.x = self.position.x + self.movement.x * dt
+	self.position.y = self.position.y + self.movement.y * dt
 end
 
 function Player:draw()
