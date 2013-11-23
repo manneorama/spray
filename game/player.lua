@@ -120,16 +120,14 @@ function Player:update(dt)
 	if self.is_shooting then
 		if self.time_since_shot >= 0.03 then
 			-- Spawn shot
-			self.shots[#self.shots+1] = Shot({x = self.position.x + self.direction.x * self.radius, y = self.position.y + self.direction.y * self.radius}, {x = self.direction.x * gridSize * 12, y = self.direction.y * gridSize * 12})
+			shots[#shots+1] = Shot({x = self.position.x + self.direction.x * self.radius, y = self.position.y + self.direction.y * self.radius}, {x = self.direction.x * gridSize * 12, y = self.direction.y * gridSize * 12})
 			self.time_since_shot = 0
 		end
 	end
 	
 	self.time_since_shot = self.time_since_shot + dt
 	
-	for i, shot in ipairs(self.shots) do
-		shot:update(dt)
-	end
+	
 end
 
 function Player:draw()
@@ -140,9 +138,6 @@ function Player:draw()
 	love.graphics.setColor(255, 0, 0)
 	love.graphics.circle("fill", self.position.x + self.direction.x * self.radius, self.position.y + self.direction.y * self.radius, 4, 32)
 	
-	for i, shot in ipairs(self.shots) do
-		shot:draw()
-	end
 end
 
 return Player
