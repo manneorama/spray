@@ -134,6 +134,10 @@ function love.update(dt)
 			for i, player in ipairs(players) do
 				player:update(dt)
 			end
+			
+			for i, shot in ipairs(shots) do
+				shot:update(dt)
+			end
 		end
 	end
 end
@@ -154,6 +158,11 @@ function love.draw()
 			if player.dead then
 				player_dead = true
 			end
+		end
+		
+		
+		for i, shot in ipairs(shots) do
+			shot:draw()
 		end
 		
 		-- Draw GUI
@@ -185,6 +194,9 @@ function startNewGame()
 		Player(1),
 		--Player(),
 	}
+	
+	shots = {}
+	
     level = Level()
     level:get('test')
 

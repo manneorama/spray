@@ -54,6 +54,8 @@ function Player:keyreleased(key)
 			self.movement.y = self.movement.y-128
 		elseif key == "d" then
 			self.movement.x = self.movement.x-128
+		elseif key == " " then
+			self.is_shooting = false
 		end
 	elseif self.id == 2 then
 	
@@ -61,6 +63,7 @@ function Player:keyreleased(key)
 end	
 
 function Player:keypressed(key)
+	print(key)
 	if self.id == 1 then
 		if key == "w" then
 			self.movement.y = self.movement.y-128
@@ -70,6 +73,16 @@ function Player:keypressed(key)
 			self.movement.y = self.movement.y+128
 		elseif key == "d" then
 			self.movement.x = self.movement.x+128
+		elseif key == "up" then
+			self.direction.y = -1
+		elseif key == "left" then
+			self.direction.x = -1
+		elseif key == "down" then
+			self.direction.y = 1
+		elseif key == "right" then
+			self.direction.x = 1
+		elseif key == " " then
+			self.is_shooting = true
 		end
 	elseif self.id == 2 then
 	
@@ -78,39 +91,46 @@ end
 
 function Player:update(dt)
 	-- Handle input
-	local movement_x, movement_y, _unused, aim_y, aim_x = love.joystick.getAxes(self.id)
+	if love.joystick.isOpen(self.id) then
+		local movement_x, movement_y, _unused, aim_y, aim_x = love.joystick.getAxes(self.id)
+		
+		local movement_length = math.sqrt(movement_x*movement_x + movement_y*movement_y)
+		
+		if movement_length > 0.2 then
+			self.position.x = self.position.x + movement_x * dt * 128
+			self.position.y = self.position.y + movement_y * dt * 128
+		end
+		
+		local aim_length = math.sqrt(aim_x*aim_x + aim_y*aim_y)
 	
-	local movement_length = math.sqrt(movement_x*movement_x + movement_y*movement_y)
-	
-	if movement_length > 0.2 then
-		self.position.x = self.position.x + movement_x * dt * 128
-		self.position.y = self.position.y + movement_y * dt * 128
+		if aim_length > 0.2 then
+			self.direction.x = aim_x / aim_length
+			self.direction.y = aim_y / aim_length
+		end
 	end
 
 	self.position.x = self.position.x + self.movement.x * dt
 	self.position.y = self.position.y + self.movement.y * dt
 
-    level:checkCollisions(self.position, self.radius)
+	local direction_length = math.sqrt(self.direction.x*self.direction.x + self.direction.y*self.direction.y)
 	
-	local aim_length = math.sqrt(aim_x*aim_x + aim_y*aim_y)
+	self.direction.x = self.direction.x / direction_length
+	self.direction.y = self.direction.y / direction_length
 	
-	if aim_length > 0.2 then
-		self.direction.x = aim_x / aim_length
-		self.direction.y = aim_y / aim_length
-	end
+	self.position.x = self.position.x + self.movement.x * dt
+	self.position.y = self.position.y + self.movement.y * dt
 	
 	if self.is_shooting then
-		if self.time_since_shot >= 0.1 then
+		if self.time_since_shot >= 0.03 then
 			-- Spawn shot
-			self.shots[#self.shots+1] = Shot({x = self.position.x + self.direction.x * self.radius, y = self.position.y + self.direction.y * self.radius}, {x = self.direction.x * gridSize * 6, y = self.direction.y * gridSize * 6})
+			shots[#shots+1] = Shot({x = self.position.x + self.direction.x * self.radius, y = self.position.y + self.direction.y * self.radius}, {x = self.direction.x * gridSize * 12, y = self.direction.y * gridSize * 12})
+			self.time_since_shot = 0
 		end
 	end
 	
 	self.time_since_shot = self.time_since_shot + dt
 	
-	for i, shot in ipairs(self.shots) do
-		shot:update(dt)
-	end
+	
 end
 
 function Player:draw()
@@ -121,9 +141,6 @@ function Player:draw()
 	love.graphics.setColor(255, 0, 0)
 	love.graphics.circle("fill", self.position.x + self.direction.x * self.radius, self.position.y + self.direction.y * self.radius, 4, 32)
 	
-	for i, shot in ipairs(self.shots) do
-		shot:draw()
-	end
 end
 
 return Player
