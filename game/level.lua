@@ -33,7 +33,7 @@ function Level:draw()
             elseif c == 'O' or c == 'S' then
                 love.graphics.setColor(colors.floorColor.r, colors.floorColor.g, colors.floorColor.b)
             end
-            love.graphics.rectangle("fill", j*gridSize, i*gridSize, gridSize, gridSize)
+            love.graphics.rectangle("fill", (j-1)*gridSize, (i-1)*gridSize, gridSize, gridSize)
         end
     end
 end
