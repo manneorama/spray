@@ -13,7 +13,7 @@ function love.load()
 	print("Load started...")
 	-- Set Graphic Stuff
 	gridSize = 32
-	screenSize = { x = gridSize*18, y = gridSize*11}
+	screenSize = { x = gridSize*30, y = gridSize*20}
 	love.graphics.setMode(screenSize.x, screenSize.y)
 
 	-- Sounds
@@ -179,7 +179,7 @@ function startNewGame()
 		--Player(),
 	}
     level = Level()
-    level:load('test')
+    level:get('test')
 
 	-- Set gamestate stuff
 	game.paused = false

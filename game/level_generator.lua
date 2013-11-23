@@ -9,7 +9,7 @@ setmetatable(LevelGenerator, {
 
 function LevelGenerator.new()
     local self = setmetatable({}, LevelGenerator)
-    self.lines = 30
+    self.lines = 20
     self.lineWidth = 30
     self.spawns = 2
     self.matchExpr = '[XOS]+'
@@ -18,10 +18,10 @@ function LevelGenerator.new()
 end
 
 function LevelGenerator:parseLevel(filename)
-    valid = self:validateLevel(filename)
+    local valid = self:validateLevel(filename)
     if not valid then return nil end
 
-    level = {}
+    local level = {}
     for line in io.lines(filename) do
         table.insert(level, line)
     end
@@ -30,8 +30,8 @@ function LevelGenerator:parseLevel(filename)
 end
 
 function LevelGenerator:validateLevel(filename)
-    lineCount = 0
-    spawnPoints = 0
+    local lineCount = 0
+    local spawnPoints = 0
     for line in io.lines(filename) do 
         lineCount = lineCount + 1
         if lineCount > self.lines then
