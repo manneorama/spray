@@ -111,14 +111,17 @@ function Player:update(dt)
 
 	self.position.x = self.position.x + self.movement.x * dt
 	self.position.y = self.position.y + self.movement.y * dt
-
+	
+	local collision, new_position = level:checkCollisions(self.position, self.radius)
+	
+	if collision then
+		self.position = new_position
+	end
+	
 	local direction_length = math.sqrt(self.direction.x*self.direction.x + self.direction.y*self.direction.y)
 	
 	self.direction.x = self.direction.x / direction_length
 	self.direction.y = self.direction.y / direction_length
-	
-	self.position.x = self.position.x + self.movement.x * dt
-	self.position.y = self.position.y + self.movement.y * dt
 	
 	if self.is_shooting then
 		if self.time_since_shot >= 0.03 then

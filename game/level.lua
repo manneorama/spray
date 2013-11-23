@@ -34,6 +34,7 @@ function Level:draw()
                 love.graphics.setColor(colors.floorColor.r, colors.floorColor.g, colors.floorColor.b)
             end
             love.graphics.rectangle("fill", (j-1)*gridSize, (i-1)*gridSize, gridSize, gridSize)
+			
         end
     end
 end
@@ -44,44 +45,48 @@ function Level:checkCollisions(coords, radius)
     local yposmin = math.floor((coords.y - radius)/gridSize)
     local yposmax = math.floor((coords.y + radius)/gridSize)
 
+	local collisions = {}
     local collision = false
-    local collisions = {}
-    local newPosition = {}
+	local new_position = coords
+    
     for i=yposmin, yposmax do
         local levelRow = self.levelTable[i+1]
         for j=xposmin, xposmax do
             local tile = levelRow:sub(j+1,j+1)
             if tile == 'X' then
                 collision = true
-                table.insert(collisions, {x = j, y = i})
+				collisions[#collisions+1] = {x = j+1, y = i+1}
             end
         end
     end
-
-    return collision, self.findNewPositions(collisions, coords, radius)
+	
+    return collision, self:findNewPosition(collisions, coords, radius)
 end
 
 function Level:findNewPosition(collisions, curPosition, radius)
     local gridx = math.floor(curPosition.x/gridSize) + 1
     local gridy = math.floor(curPosition.y/gridSize) + 1
-
-    for i, v in ipairs(collisions) do
-        if gridx ~= v.x then
-            if gridx < v.x then
-                curPosition.x = curPosition.x - radius
-            else
-                curPosition.x = curPosition.x + radius
-            end
-        end
-        if gridy ~= v.y then
-            if gridy < v.y then
-                curPosition.y = curPosition.y - radius
-            else
-                curPosition.y = curPosition.y + radius
-            end
-        end
-    end
-
+	
+	for i, collision_tile in ipairs(collisions) do
+		if gridx == collision_tile.x and gridy == collision_tile.y then
+		
+		elseif gridx ~= collision_tile.x and gridy ~= collision_tile.y then
+			
+		elseif gridx ~= collision_tile.x then
+			if gridx < collision_tile.x then
+				curPosition.x = (collision_tile.x-1) * gridSize - radius
+			else
+				curPosition.x = collision_tile.x * gridSize + radius
+			end
+		elseif gridy ~= collision_tile.y then
+			if gridy < collision_tile.y then
+				curPosition.y = (collision_tile.y-1) * gridSize - radius
+			else
+				curPosition.y = collision_tile.y * gridSize + radius
+			end
+		end
+	end
+	
     return curPosition
 end
 
