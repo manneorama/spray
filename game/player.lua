@@ -7,16 +7,13 @@ setmetatable(Player, {
 	end,
 })
 
-function Player.init()
+function Player.init(id)
 	-- Create player
 	local player = {
-		direction = "right",
-		position = {x = 0, y = 0},
-		size = {x = gridSize, y = gridSize},
-		body = {},
-		madness = 0,
+		id = id,
+		position = {x = 32, y = 32},
+		radius = 16,
 		dead = false,
-		timeSinceUpdate = 0
 	}
 	setmetatable(player, Player)
 	return player
@@ -28,24 +25,28 @@ function Player:kill()
 	self.dead = true
 end
 
-function Player:keypressed(key)
-	if key == "up" and self.direction ~= "down" and self.direction ~= "up" or 
-		key == "down" and self.direction ~= "down" and self.direction ~= "up" or 
-		key == "left" and self.direction ~= "right" and self.direction ~= "left" or
-		key == "right" and self.direction ~= "right" and self.direction ~= "left" then
+function Player:joystickpressed(key)
+	
+end
 
-		self.direction = key
-		self:update()
-	end
+function Player:keypressed(key)
+	
 end	
 
-function Player:update()
-	-- Move every part of snake
+function Player:update(dt)
+	-- Handle input
+	local movement_x, movement_y, _unused, aim_x, aim_y = love.joystick.getAxes(self.id)
+	
+	self.position.x = self.position.x + movement_x * dt * 128
+	self.position.y = self.position.y + movement_y * dt * 128
+	
+	self.
 
 end
 
 function Player:draw()
-	
+	love.graphics.setColor(colors.bodyColor.r, colors.bodyColor.g, colors.bodyColor.b)
+	love.graphics.circle("fill", self.position.x, self.position.y, self.radius, 32)
 end
 
 return Player

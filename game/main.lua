@@ -36,8 +36,6 @@ function love.load()
 
 	-- Colors
 	colors = {
-		appleColor = {r = 173, g = 9, b = 18},
-		snakeColor = {r = 255, g = 255, b = 255},
 		bodyColor = {r = 164, g = 164, b = 164},
 		textColor = {r = 255, g = 255, b = 255},
 		menuColor = {r = 160, g = 160, b = 160},
@@ -60,6 +58,13 @@ function love.load()
 	gui = GUI()
 
 	print("Load finished...")
+end
+
+function love.joystickpressed(joystick, key)
+	if joystick == "Joystick1" then
+		players[1]:joystickpressed(key)
+	end
+	print("Joystick" .. joystick .. " " .. key)
 end
 
 function love.keypressed(key)
@@ -104,7 +109,9 @@ end
 function love.update(dt)
 	if game.mode == "playing" then
 		if not game.paused then
-			
+			for i, player in ipairs(players) do
+				player:update(dt)
+			end
 		end
 	end
 end
@@ -115,16 +122,21 @@ function love.draw()
 		menu:draw()
 
 	elseif game.mode == "playing" then
-
-		
+	
 		-- Draw SNAKE
-		player:draw()
-
+		local player_dead = false
+		for i, player in ipairs(players) do
+			player:draw()
+			if player.dead then
+				player_dead = true
+			end
+		end
+		
 		-- Draw GUI
 		gui:draw()
 
 		-- Draw dead screen
-		if player.dead then
+		if player_dead then
 			love.graphics.setColor(colors.textColor.r, colors.textColor.g, colors.textColor.b)
 			love.graphics.setFont(fonts.bigFont)
 			love.graphics.printf(texts.deadText, screenSize.x/4, screenSize.y/4, screenSize.x/2, "center")
@@ -145,7 +157,10 @@ end
 
 function startNewGame()
 	-- Create player
-	player = Player()
+	players = {
+		Player(1),
+		--Player(),
+	}
 
 	-- Set gamestate stuff
 	game.paused = false
@@ -173,12 +188,10 @@ end
 
 function pauseGame()
 	-- If not dead then pause/unpause
-	if not player.dead then
-		if game.mode == "playing" and not game.paused then
-			game.paused = true
-		elseif game.mode == "playing" and game.paused then
-			game.paused = false
-		end
+	if game.mode == "playing" and not game.paused then
+		game.paused = true
+	elseif game.mode == "playing" and game.paused then
+		game.paused = false
 	end
 end
 
