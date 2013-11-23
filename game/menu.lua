@@ -52,14 +52,9 @@ function Menu:keypressed(key)
 		-- Move active up
 		self.activeItem = self.activeItem - 1
 
-		-- Play sounds
-		sounds.menu:stop()
 	elseif key == "down" then
 		-- Move active down
 		self.activeItem = self.activeItem + 1
-
-		-- Play sounds
-		sounds.menu:stop()
 	else 
 		-- Execute item
 		self.items[self.activeItem].execute(key)

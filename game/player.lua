@@ -23,8 +23,6 @@ function Player.init()
 end
 
 function Player:kill()
-	-- Play some sound, do something...
-	sounds.death:stop()
 
 	-- Set dead
 	self.dead = true

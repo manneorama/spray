@@ -153,7 +153,6 @@ function startNewGame()
 
 	-- Start background sound
 	stopSounds()
-	sounds.newGame:play()
 end
 
 function goToMenu()
