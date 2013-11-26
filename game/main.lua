@@ -131,8 +131,6 @@ function love.update(dt)
 				player:update(dt)
 			end
 			
-			local shots_to_remove = {}
-			
 			for i=#shots, 1, -1 do
 				shots[i]:update(dt)
 				if shots[i].collided then

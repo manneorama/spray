@@ -107,6 +107,21 @@ function Player:update(dt)
 		self.position = new_position
 	end
 	
+	-- Check collisions against all the shots
+	for i, shot in ipairs(shots) do
+		local delta_x = self.position.x - shot.position.x
+		local delta_y = self.position.y - shot.position.y
+		
+		local hit_distance_squared = self.radius*self.radius
+		local distance_squared = delta_x*delta_x + delta_y*delta_y
+		
+		if distance_squared <= hit_distance_squared then
+			-- HIT!
+			shot.collided = true
+			self.dead = true
+		end
+	end
+	
 	local direction_length = math.sqrt(self.direction.x*self.direction.x + self.direction.y*self.direction.y)
 	
 	self.direction.x = self.direction.x / direction_length
@@ -121,7 +136,6 @@ function Player:update(dt)
 	end
 	
 	self.time_since_shot = self.time_since_shot + dt
-	
 	
 end
 

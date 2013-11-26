@@ -26,7 +26,7 @@ function Shot:update(dt)
 	self.position.x = self.position.x + self.velocity.x * dt
 	self.position.y = self.position.y + self.velocity.y * dt
 	
-	self.collided = level:checkCollisions(self.position, self.radius, false)
+	self.collided = self.collided or level:checkCollisions(self.position, self.radius, false)
 end
 
 function Shot:draw()
